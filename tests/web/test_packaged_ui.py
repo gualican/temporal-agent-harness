@@ -37,11 +37,11 @@ from temporal_agent_harness.web import (
     create_session_manager_worker,
 )
 from temporal_agent_harness.web.app import (
-    _discover_untracked_sessions,
     _ensure_session_manager_workflow,
     _session_with_execution_state,
     _workflow_execution_state,
 )
+from temporal_agent_harness.web.discovery import discover_untracked_sessions
 
 ROOT = Path(__file__).resolve().parents[2]
 WHEEL_UI_PREFIX = "temporal_agent_harness/ui/dist/"
@@ -301,7 +301,7 @@ async def test_discover_untracked_sessions_finds_running_workflow_not_in_manager
         ]
     )
 
-    discovered = await _discover_untracked_sessions(temporal, registry, known_workflow_ids=set())
+    discovered = await discover_untracked_sessions(temporal, registry, known_workflow_ids=set())
 
     assert discovered == [
         Session(
@@ -337,7 +337,7 @@ async def test_discover_untracked_sessions_excludes_already_known_workflow_ids()
         ]
     )
 
-    discovered = await _discover_untracked_sessions(
+    discovered = await discover_untracked_sessions(
         temporal, registry, known_workflow_ids={"agent-session-known"}
     )
 
@@ -364,7 +364,7 @@ async def test_discover_untracked_sessions_skips_workflow_types_outside_registry
         ]
     )
 
-    discovered = await _discover_untracked_sessions(temporal, registry, known_workflow_ids=set())
+    discovered = await discover_untracked_sessions(temporal, registry, known_workflow_ids=set())
 
     assert discovered == []
 
@@ -373,7 +373,7 @@ async def test_discover_untracked_sessions_skips_list_workflows_when_registry_is
     handle = _FakeWorkflowHandle(status=WorkflowExecutionStatus.RUNNING)
     temporal = _FakeTemporalClient(handle)
 
-    discovered = await _discover_untracked_sessions(
+    discovered = await discover_untracked_sessions(
         temporal, AgentRegistry(), known_workflow_ids=set()
     )
 

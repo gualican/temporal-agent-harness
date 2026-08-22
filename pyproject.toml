@@ -12,6 +12,12 @@ dependencies = [
     "pydantic>=2.0",
 ]
 
+[project.scripts]
+# The CLI (temporal_agent_harness.cli) needs nothing beyond the core deps above — it drives
+# the same packaged SessionManagerWorkflow as temporal_agent_harness.web but skips FastAPI
+# entirely, so it's available without the `ui` extra.
+harness = "temporal_agent_harness.cli.main:main"
+
 [project.optional-dependencies]
 # The Google Gemini SDK integration: temporal_agent_harness.ai_sdks.google_genai_plugin.
 genai = [

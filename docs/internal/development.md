@@ -12,6 +12,7 @@ temporal_agent_harness/
 │                 #   the agent/subagent protocol, human-in-the-loop approvals
 ├── ai_sdks/      # AI SDK integrations (Gemini today) — durable activity wrappers
 ├── web/          # packaged session-manager workflow + FastAPI app factory
+├── cli/          # `harness` terminal client — same session manager, no FastAPI needed
 └── utils/        # general Temporal utilities (e.g. large-payload offload)
 
 examples/
