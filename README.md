@@ -446,6 +446,27 @@ between a single-example server and the all-agents server (or change the set), r
 agent whose worker isn't running will accept a created session but never progress (it parks) — start
 its worker.
 
+## CLI
+
+`harness` is a terminal client for the same packaged session manager the web UI drives — no
+FastAPI/`ui` extra required, since it's part of the core install:
+
+```bash
+harness agents                        # list the agents in agents.toml
+harness chat --agent openai-hello     # start a new session and chat
+harness chat --session <workflow-id>  # resume an existing one
+harness sessions                      # tracked + discovered sessions, with live status
+harness approve --session <id>        # list, or --tool-id ID [--deny] to resolve, pending approvals
+harness close --session <id>          # signal the session to wind down
+```
+
+A session started via `harness chat` is listable and attachable from the web UI (and vice
+versa) — both drive the same `SessionManagerWorkflow`. `chat` sends free text by introspecting
+the target `@agent.accepts` handler's input schema (`AgentClient.get_agent_interface`) rather
+than assuming a fixed field name, so it works against the bundled `ask(TextMessage)` convention
+as well as a custom handler; prefix a line with `/json ` to send a raw JSON payload instead, or
+pass `--message-type` to pick a handler when an agent exposes more than one.
+
 ## Status & docs
 
 This is experimental and under active development; expect breaking changes. Deeper design
