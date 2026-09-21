@@ -51,6 +51,13 @@ ui = [
 code-mode = [
     "pydantic-monty>=0.0.18",
 ]
+# Opt-in "auto" model routing for the OpenAI Agents integration
+# (temporal_agent_harness.ai_sdks.openai_agents.jev_auto_routing), using jev-model-router's
+# Jev-based classifier to pick a model per call. Combine with the openai-agents extra, e.g.
+# pip install "temporal-agent-harness[openai-agents,jev-routing]".
+jev-routing = [
+    "jev-model-router",
+]
 
 [dependency-groups]
 # Everything needed to RUN the bundled Monty example from a checkout. Not part of the
@@ -63,6 +70,7 @@ examples = [
     "openai-agents>=0.17.5",  # the OpenAI Agents SDK example (examples/openai_hello, examples/react_agent)
     "pydantic-ai-slim[temporal]>=2.13",  # the Pydantic AI example (examples/pydantic_ai_hello)
     "httpx>=0.27",  # the react_agent example's tools call real weather / geo / IP APIs
+    "jev-model-router",  # the auto-routing example (examples/auto_routing_hello)
 ]
 # Test + lint tooling. The full tests/ suite imports both the Gemini SDK (the ai_sdks plugin
 # tests) and pydantic-monty (the monty example tests), which live in the `examples` group —
@@ -81,6 +89,7 @@ dev = [
     "temporalio[opentelemetry]>=1.30.0",
     # Pydantic AI integration (the ai_sdks glue + its tests) — mirrors the `pydantic-ai` extra.
     "pydantic-ai-slim[temporal]>=2.13",
+    "jev-model-router",  # auto-routing tests (tests/ai_sdks/openai_agents/test_jev_auto_routing.py) — mirrors the `jev-routing` extra
     { include-group = "examples" },
 ]
 
@@ -102,6 +111,8 @@ include = ["temporal_agent_harness*"]
 # For now we need to pin to an unreleased Python SDK version that has update-with-callback over Nexus.
 # TODO(long-nt-tran): Remove this commit pin and use a released version once the release is bumped.
 temporalio = { git = "https://github.com/temporalio/sdk-python", rev = "29e0c51b0f832e0c9148f28ebba4000ab183d42f" }
+# Not published to PyPI — install straight from the repo.
+jev-model-router = { git = "https://github.com/gualican/jev-model-router" }
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

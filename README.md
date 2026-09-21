@@ -60,6 +60,12 @@ reproducible build.)
   [`pydantic-monty`](https://pypi.org/project/pydantic-monty/), the sandbox the scripts run in.
   (The workflow-side `agent.code_mode_tool` factory itself needs nothing extra, so importing it
   never requires this dependency.)
+- **`jev-routing`** — opt-in "auto" model routing for the OpenAI Agents integration
+  (`temporal_agent_harness.ai_sdks.openai_agents.jev_auto_routing`): classifies each call with
+  TypeSafe's Jev and routes it to a model by tier instead of one fixed model. Pulls in
+  [jev-model-router](https://github.com/gualican/jev-model-router). Combine with the
+  `openai-agents` extra — see `examples/auto_routing_hello` and
+  `docs/design/jev-auto-model-routing.md`.
 
 Combine extras in the dependency spec, e.g. `"temporal-agent-harness[ui,code-mode]"`.
 

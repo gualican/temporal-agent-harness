@@ -1,0 +1,19 @@
+# Registry of agents the auto-routing hello-world example UI can launch.
+#
+# The shared FastAPI server (examples/app.py) reads this file and passes the parsed
+# registry into the packaged SessionManagerWorkflow as its workflow init arg. The
+# manager then serves it back over the `available_agents` query, so the app server
+# can expose it at /api/agents without hardcoding the agent list.
+#
+# To expose a new agent: register its @workflow.defn on a worker, then add a
+# [[agents]] entry here.
+
+[[agents]]
+key = "auto-routing-hello"
+workflow_type = "AutoRoutingHelloAgent"
+task_queue = "auto-routing-hello"
+label = "Auto-Routing Hello"
+description = """
+A copy of the OpenAI Hello example whose model starts as 'auto': each call is classified
+by TypeSafe's Jev (jev-model-router) and routed to a model by tier instead of always
+calling one fixed model. Use /model to switch between 'auto' and a fixed model."""
