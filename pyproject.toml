@@ -41,6 +41,12 @@ openai-agents = [
 pydantic-ai = [
     "pydantic-ai-slim[temporal]>=2.13",
 ]
+# Mem0 memory backend: temporal_agent_harness.harness.memory.providers.mem0. (The Temporal-workflow
+# backend needs only the core deps, plus `openai` — the openai-agents extra — for write-time embeddings,
+# and degrades to keyword recall without them.)
+mem0 = [
+    "mem0ai>=2.2",
+]
 # Packaged FastAPI server and browser UI assets.
 ui = [
     "fastapi[standard]>=0.136.3",
@@ -56,6 +62,7 @@ code-mode = [
 # Everything needed to RUN the bundled Monty example from a checkout. Not part of the
 # published package's runtime deps — examples are not shipped.
 examples = [
+    "mem0ai>=2.2",  # the memory.providers.mem0 backend + its contract test
     "google-genai>=2.0.0",
     "google-auth>=2.53.0",
     "pydantic-monty>=0.0.18",  # the Monty sandbox the monty example runs scripts in
