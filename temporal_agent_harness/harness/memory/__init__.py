@@ -12,6 +12,7 @@ from temporal_agent_harness.harness.memory.tools import (
     forget_memory,
     list_memories,
     memory_context,
+    memory_tool_activities,
     recall_memories,
     remember_memory,
 )
@@ -28,6 +29,7 @@ __all__ = [
     "forget_memory",
     "list_memories",
     "memory_context",
+    "memory_tool_activities",
     "recall_memories",
     "remember_memory",
 ]

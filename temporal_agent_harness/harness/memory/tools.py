@@ -3,8 +3,8 @@
 # injecting top-k memories into a prompt. Workflow code imports only this module (no backend deps).
 #
 # Wiring:
-#   worker:    configure_memory(MyProvider(...));  plugin = AgentHarnessPlugin(tools=MEMORY_TOOLS)
-#              Worker(..., activities=MEMORY_ACTIVITIES)        # only if you use memory_context
+#   worker:    configure_memory(MyProvider(...))
+#              Worker(..., activities=memory_tool_activities())   # tool bodies + memory_context
 #   workflow:  as_openai_agent_tools(runner, MEMORY_TOOLS, injections={"scope": user_id})
 #              instructions += MEMORY_INSTRUCTIONS
 #
@@ -133,3 +133,10 @@ async def memory_context(request: MemoryContextRequest) -> str:
 
 
 MEMORY_ACTIVITIES = [memory_context]
+
+
+def memory_tool_activities() -> list:
+    """Everything a worker must register for the memory layer: each tool's durable activity body
+    plus ``memory_context``. Hand it to ``Worker(activities=...)`` (or, with a plugin, pass
+    ``MEMORY_TOOLS`` to it instead and add ``MEMORY_ACTIVITIES`` yourself)."""
+    return [*(agent.tool_activity(tool) for tool in MEMORY_TOOLS), *MEMORY_ACTIVITIES]
